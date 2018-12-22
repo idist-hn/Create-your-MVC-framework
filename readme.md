@@ -24,7 +24,7 @@ Bạn có thể theo dõi bài hướng dẫn thông qua repo Github của tôi:
 
 ### Cấu trúc 
 
-Để thiết lập design pattern này, chúng ta sẽ dựng cấu trúc cho project của mình. Chúng ta có thể tìm thấy nhiều khả năng trên internet. Nhưng ở đây tôi đề xuất:
+Để thiết lập design pattern này, chúng ta sẽ dựng cấu trúc cho project của mình. Chúng ta có thể tìm thấy nhiều cách trên internet. Nhưng ở đây tôi đề xuất:
 
 ![][2]
 
@@ -32,7 +32,7 @@ Như bạn thấy, chúng ta sử dụng phần khung cho framework MVC với 3 
 
 * Folder Webroot chỉ là một thư mục có thể truy cập bởi user.
 * Router.php, dispatcher.php, request.php, .htaccess là thành phần của hệ thống điều hướng.
-* Config : mọi cài đặt tùy chọn cần thiết cho website của bạn. Chúng ta sẽ sủ dụng lại và file db.php là điểm duy nhất có thể truy cập tới database của bạn (singleton class).
+* Config : mọi cài đặt tùy chọn cần thiết cho website của bạn. Chúng ta sẽ sử dụng lại và file db.php là điểm duy nhất có thể truy cập tới database của bạn (singleton class).
 
 ### Kiến trúc mức Global
 
