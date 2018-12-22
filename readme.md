@@ -38,16 +38,17 @@ Như bạn thấy, chúng ta sử dụng phần khung cho framework MVC với 3 
 
 ![][3]
 
-When accessing our website, the user will be automatically redirected to the Webroot/index.php thanks to two.htaccess files.
 
-The first one will redirect the user to the Webroot directory.
+Khi truy cập vào website của chúng ta, user sẽ tự động chuyển hướng tới Webroot/index.php thông qua 2 file .htaccess.
+
+File đầu tiên để chuyển hướng user vào thư mục Webroot.
 
 ```
 RerwiteEngine on
 RewriteRule ^([a-zA-Z0-9\-\_\/]*)$ Webroot/$1
 ```
 
-And the second one will redirect him/her to the index.php. Notice that we store the parameter (p=$1).
+Và file thứ 2 để chuyển hướng họ vào index.php. Chú ý là chúng ta lưu trữ ở biến (p=$1).
 
 ```
 RerwiteEngine on
@@ -55,8 +56,7 @@ RewriteCond %{REQUEST_URI} !\.(?:css|js|jpe?g|gif|png)$ [NC]
 RewriteRule ^([a-zA-Z0-9\-\_\/]*)$ index.php?p=$1
 ```
 
-The index.php is requiring all the files that we will need for the instantiation of the dispatcher. After creating a instance of the Dispatch class, we are ready to set our routing logic.
-
+Index.php yêu cầu tất cả các file mà chúng ta cần để cài đặt việc điều phối. Sau khi tạo một instance của class Dispatch, chúng ta đã sẵn sàng để thiết lập logic điều phối của mình.
 
 ```php
 define('WEBROOT', str_replace("Webroot/index.php", "", $_SERVER["SCRIPT_NAME"]));
@@ -72,11 +72,11 @@ $dispatch = new Dispatcher();
 $dispatch->dispatch();
 ```
 
-### Routing system
+### Hệ thống điều hướng
 
 #### _request.php_
 
-The goal of this file is to get the url requested by the user.
+Mục tiêu của file này là nhận các url được yêu cầu từ phía người dùng.
 
 ```php
 class Request
@@ -92,7 +92,7 @@ class Request
 
 #### router.php
 
-The router takes the url captured by the _request.php_ and explode the url into 3 different parts on the "/" character :
+router lấy url từ _request.php_ và phân rã url đó thành 3 phần khác nhau bởi dấu "/":
 
 ```php
 $explode_url = explore('/', $url);
@@ -102,13 +102,13 @@ $request->action = $explode_url[1];
 $request->params = array_slice($explode_url, 2);
 ```
 
-These inputs will be handled by the dispatcher. The dispatcher is doing the same job as an air traffic controller. When a new request is loaded, it selects the controller and the action with parameters. So with only one method (dispatch()), we can launch all this routing logic.
+Những đầu vào này sẽ được xử lý bởi thành phần điều phối. Thành phần điều phối sẽ thực hiện công việc tương tự như một người kiểm soát việc lưu thông. Khi có một request mới được tải, nó lựa chọn controller và các action với các tham số. Vì thế chỉ cần một phương thức (dispatch()), chúng ta có thể khởi chạy tất cả các logic điều hướng này.
 
 ![][9]
 
 ### Database
 
-Our model is going to handle the request to our database. So we will have to call our database a lot of time. In a simple way, at each connexion, we can create an instance of the database. This solution is not really efficient. I recommend we create a singleton which will handle the connexion to our database :
+Mô hình này của chúng ta sẽ xủ lý yêu cầu tới database của mình. Vì vậy chúng ta sẽ phải gọi tới cơ sở dữ liệu của chúng ta nhiều lần. Bằng một cách đơn giản, với mỗi kết nối, chúng ta có thể tạo ra một instance của database. Giải pháp này thực sự không hiệu quả. Tôi đề xuất chúng ta tạo một singleton mà sẽ xử lý việc kết nối tới cơ sở dữ liệu của mình:
 
 ```php
 class Database
@@ -121,29 +121,29 @@ class Database
 
 ### MVC
 
-Now that we set up the dispatcher, our website can load an action from a controller.
+Giờ chúng ta thiết lập bộ điều phối, website của chúng ta có thể thực hiện các action từ một controller.
 
-Here we want to make a todo app, so we have to create a _tasksController.php_. This controller is going to ask for data from the model Task.php and then pass the data to a view. To make this process easier, we are going to create a parent class Controller that will handle this.
+Giờ chúng ta muốn tạo ra một app todo, vì vậy chúng ta phải tạo một _TaskController.php_. Controller này sẽ lấy dữ liệu từ model Task.php và chuyển chúng tới một view. Để giúp quá trình này dễ dàng hơn, chúng ta sẽ tạo một class Controller cha để xử lý nó.
 
 ![][11]
 
-The _set()_ method is going to merge all the data that we want to pass to the view.
+Phương thức _set()_ sẽ merge tất cả dũ liệu mà chúng ta muốn vào view.
 
-The _render()_ method is going to import the data with the method extract and then load the layout requested in the Views directory. Moreover, this allows us to have a layout in order to avoid the stupid repetition of HTML in our views.
+Phương thức _render()_ sẽ import dữ liệu vào với trích xuất các phương thức và sau đó tải các layout được yêu cầu trong thư mục Views. Thêm nữa là nó cho phép chúng ta có một layout để tránh việc lặp lại một cách ngu ngốc các phần HTML trong view của chúng ta.
 
-We are ready to work on our tasksController.php. Just to test out our code, I'm going to create an index action :
+Chúng ta đã sẵn sàng làm việc trên TaskController của mình. Hãy thử kiểm tra code của mình, tôi sẽ tạo ra một action index:
 
 ![][12]
 
-And a quick view with a "Hello" message.
+Và cái view đơn giản chỉ với thông báo "Hello".
 
-And here is the result :
+Và đây là kết quả:
 
 ![][13]
 
-Our MVC framework is set up ! Now we just have to make the CRUD actions about the task resource. If you want more details of this and get the website with the tasks CRUD, you can check out the repo on my Github.
+Framework MVC của chúng ta đã hoàn thành, giờ chúng ta phải tạo các action CRUD về quản lý task. Nếu bạn muốn chi tiết hơn về điều này, có một website với các task CRUD, bạn có thể xem qua repo của tôi trên Github.
 
-So now, you have developed an MVC structure that is a lot more sustainable than our traditional php website. But there is still a lot of work to do (security, error handling…). These topics are already handled by frameworks like Laravel or Symfony.
+Vậy bây giờ, bạn đã phát triển xong một cấu trúc MVC bền vững hơn nhiều so với cấu trúc truyền thống của website php thông thường. Nhưng còn rất nhiều việc phải làm(bảo mật, xủ lý lỗi,...). Những topic này xử lý bởi framework như Laravel hay Symfony.
 
 [1]: https://cdn-images-1.medium.com/max/1600/1*xnuMvzXzmAxYXcRrd1Wj5Q.png
 [2]: https://cdn-images-1.medium.com/max/1600/1*IA0nHOylfQYxjnGwi1XGaQ.png
